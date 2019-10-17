@@ -1,0 +1,19 @@
+{
+  "name": "business-layer-orchestrator",
+  "version": "1.0.0",
+  "description": "This services manages request from the Front End.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zeus-cloud/business-layer-orchestrator.git"
+  },
+  "author": "@ZanFerreiro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zeus-cloud/business-layer-orchestrator/issues"
+  },
+  "homepage": "https://github.com/zeus-cloud/business-layer-orchestrator#readme"
+}
