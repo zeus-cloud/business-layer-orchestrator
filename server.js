@@ -6,6 +6,7 @@ import { Value } from "./Constants/index.js";
 const ex = require(Value.EXPRESS);
 const bodyParser = require(Value.BODY_PARSER);
 const app = ex();
+app.use(bodyParser.json({ extended: true }));
 
 require('./app/routes')(app, {});
 app.listen(Value.PORT, () =>{

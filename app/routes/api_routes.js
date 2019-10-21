@@ -1,10 +1,12 @@
 //import {} from "../../Util/basicAuth";
 const basicAuth = require('../../Util/basicAuth');
-let textTest = "";
+let authHeader = "";
 var user = {
     name:"",
     password:""
 }
+
+var responseBody;
 const fetch = require('node-fetch')
 
 var headers = {
@@ -14,27 +16,33 @@ var headers = {
 module.exports = function(app, db){
     app.post('/file', (req, res)=>{
         //Aqui deberia venir un archivo
-        textTest   = req.headers;
-        textTest = req.headers.authorization;
+        
        //decodificar Basic Auth
-        auth = basicAuth(textTest)
+        authHeader = req.headers.authorization;
+        auth = basicAuth(authHeader)
         user.name = auth[0]
         user.password = auth[1]
         //y realizar la llamada a los servicios
        
-        fetch('https://localhost:9090/test', { method: 'GET', headers: headers})
+        fetch('http://localhost:9090/test', { method: 'GET', headers: headers})
         .then(response => {
-                            response.json()
-                            console.log(response.status)
-                            console.log(response.statusText)
-                            console.log(response.type)
-
-                                            })
-        .then(data => {console.log(data)})
+            if(response.status !== 200){
+                console.log("Something went wrong... ");
+                console.log("Code: "+response.status)
+                console.log("Msg: "+response.statusText)
+                return new Error();
+            }
+            return response.json()    
+             })
+        .then(data => {
+            console.log("Data is:")
+            console.log(data)
+            responseBody = data.message;
+        })
         .catch(err => console.log("error ocurred: "+err))
 
         //Enviar una respuesta adecuada
-        res.send(textTest+" Now is: "+user.name+":"+user.password)
+        res.send(" Now is: "+user.name+":"+user.password+" with response body: "+responseBody)
     })
 }
 
