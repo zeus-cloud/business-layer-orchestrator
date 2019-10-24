@@ -1,5 +1,7 @@
-const apiRoutes = require('./api_routes')
+const apiTestRoutes = require('./test_api_routes')
+const apiMongoRoutes = require('./mongo_routes')
 
 module.exports = function(app, db){
-    apiRoutes(app, db);
+    apiTestRoutes(app, db);
+    apiMongoRoutes(app)
 }
