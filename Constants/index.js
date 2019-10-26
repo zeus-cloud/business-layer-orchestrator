@@ -5,12 +5,14 @@ export const Value ={
 }
 
 export var headers = {
-    "Content-Type": "application/json"
+    "Content-type": "application/json",
+        "Accept": "application/json",
+        "Accept-Charset": "utf-8"
 }
 
 export var mongoConst = {
     URL :"http://localhost:9090/",
-    ENDPOINT_GET_ALL:"test",
+    ENDPOINT_ALL_FILE:"test_mongo",
     ENDPOINT_GET_ONE:"test/:id"
 }
 
@@ -19,4 +21,14 @@ export var HTTP_METHODS = {
     GET:"GET",
     PUT:"PUT",
     DELETE :"DELETE"
+}
+
+export var fileSystemConst = {
+    URL :"http://localhost:9090/",
+    ENDPOINT_ALL_FILE:"test_fileSystem",
+    ENDPOINT_ONE_FILE:"test/:id"
+}
+
+export function logError(place, error){
+    console.log(place+" error. Code: "+error.code+" "+error.msg)
 }
