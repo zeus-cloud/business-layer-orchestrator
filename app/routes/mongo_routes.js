@@ -56,9 +56,9 @@ var userinfo = {
             Constheaders,
             file_id:userinfo.file_id
         }
-        console.log("url: "+fileSystemConst.URL+fileSystemConst.ENDPOINT_GET_FILE)
+        console.log("url: "+fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+'?archivo='+userinfo.file_id)
        
-        fetch(fileSystemConst.URL+fileSystemConst.ENDPOINT_ONE_FILE,{method:HTTP_METHODS.GET, headers:headersToFileSystem})
+        fetch(fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+'?archivo='+userinfo.file_id,{method:HTTP_METHODS.GET, headers:headersToFileSystem})
         .then(jsonUtil)
         .then(data =>{
             //Check for errors in HTTP code. 

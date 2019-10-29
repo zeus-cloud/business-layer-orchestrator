@@ -18,11 +18,20 @@ var HTTP_METHODS = {
 }
 
 var fileSystemConst = {
-    URL :"http://172.19.0.10:8083/",
-    ENDPOINT_ALL_FILE:"test_fileSystem",
-    ENDPOINT_ONE_FILE:"test/:id"
+    URL :"http://10.30.129.174:8083/",
+    ENDPOINT_ALL_FILE:"enc/",
+    ENDPOINT_ONE_FILE:"enc/"
 }
 
 function logError(place, error){
     console.log(place+" error. Code: "+error.code+" "+error.msg)
+}
+
+module.exports={
+
+    logError,
+    fileSystemConst,
+    HTTP_METHODS,
+    mongoConst,
+    headers
 }
