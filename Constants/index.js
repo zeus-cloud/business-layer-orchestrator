@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var headers = {
     "Content-type": "application/json",
         "Accept": "application/json",
@@ -5,9 +7,9 @@ var headers = {
 }
 
 var mongoConst = {
-    URL :"http://172.19.0.50:9090/",
-    ENDPOINT_ALL_FILE:"test_mongo",
-    ENDPOINT_GET_ONE:"test/:id"
+    URL :process.env.mongoURL,
+    ENDPOINT_ALL_FILE:process.env.mongoENDPOINT_ALL,
+    ENDPOINT_GET_ONE:process.env.mongoENDPOINT_ONE
 }
 
 var HTTP_METHODS = {
@@ -18,9 +20,9 @@ var HTTP_METHODS = {
 }
 
 var fileSystemConst = {
-    URL :"http://10.30.129.174:8083/",
-    ENDPOINT_ALL_FILE:"enc/",
-    ENDPOINT_ONE_FILE:"enc/"
+    URL :process.env.fileSystemURL,
+    ENDPOINT_ALL_FILE:process.env.fileSystemENDPOINT,
+    QUERYPARAMS:"?archivo="
 }
 
 function logError(place, error){
@@ -28,7 +30,6 @@ function logError(place, error){
 }
 
 module.exports={
-
     logError,
     fileSystemConst,
     HTTP_METHODS,

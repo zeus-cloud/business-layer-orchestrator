@@ -56,7 +56,7 @@ var userinfo = {
             Constheaders,
             file_id:userinfo.file_id
         }
-        console.log("url: "+fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+'?archivo='+userinfo.file_id)
+        console.log("url: "+fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+fileSystemConst.QUERYPARAMS+userinfo.file_id)
        
         fetch(fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+'?archivo='+userinfo.file_id,{method:HTTP_METHODS.GET, headers:headersToFileSystem})
         .then(jsonUtil)
