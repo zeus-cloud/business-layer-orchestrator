@@ -11,7 +11,7 @@ export var headers = {
 }
 
 export var mongoConst = {
-    URL :"http://localhost:9090/",
+    URL :"http://172.19.0.50:9090/",
     ENDPOINT_ALL_FILE:"test_mongo",
     ENDPOINT_GET_ONE:"test/:id"
 }
@@ -24,7 +24,7 @@ export var HTTP_METHODS = {
 }
 
 export var fileSystemConst = {
-    URL :"http://localhost:9090/",
+    URL :"http://172.19.0.10:8083/",
     ENDPOINT_ALL_FILE:"test_fileSystem",
     ENDPOINT_ONE_FILE:"test/:id"
 }
