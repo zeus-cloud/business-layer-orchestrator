@@ -8,8 +8,9 @@ var headers = {
 
 var mongoConst = {
     URL :process.env.mongoURL,
-    ENDPOINT_ALL_FILE:process.env.mongoENDPOINT_ALL,
-    ENDPOINT_GET_ONE:process.env.mongoENDPOINT_ONE
+    ENDPOINT_ALL_USER:process.env.mongoENDPOINT_ALL_USER,
+    ENDPOINT_ONE_USER:process.env.mongoENDPOINT_ONE_USER,
+    ENDPOINT_ONE_DIRECTORY:process.env.mongoENDPOINT_ONE_DIRECTORY
 }
 
 var HTTP_METHODS = {

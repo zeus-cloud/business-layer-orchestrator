@@ -16,10 +16,18 @@ var generalResponse={
     errors:[]
 };
 
+var postToMongo = {
+    user_id:"",
+    directory:[{
+        logical_path:""
+    }],
+    shared:[]
+}
+
 var userinfo = {
-    user:"",
-    password:"",
-    file_id:""
+    _id:"",
+    name:"",
+    __V:""
 }
 
     //GET from mongo all the folder information
@@ -30,19 +38,34 @@ var userinfo = {
             user:userinfo.user,
             file_id:userinfo.file_id
         }
-        fetch(mongoConst.URL+mongoConst.ENDPOINT_ALL_FILE,{method:HTTP_METHODS.GET, headers:headers})
+
+        console.log("url: ["+mongoConst.URL+mongoConst.ENDPOINT_ALL_FILE+"]")
+        //THIS FETCHS THE USERS IN THE DB
+        fetch(mongoConst.URL+mongoConst.ENDPOINT_ALL_FILE,
+            {method:HTTP_METHODS.GET})
         .then(jsonUtil)
         .then(data =>{
             if (data instanceof Error)
             throw data;
             else{
-                doingStuff()
-                generalResponse.data.push(data);
+                //ISSUE: HERE WE SHOULD SEARCH A SPECIFIC USER
+                userinfo = data
+
+                console.log("url: ["+mongoConst.URL+mongoConst.ENDPOINT_ONE_DIRECTORY+userinfo._id+"]")
+                //THIS FETCH THE DIRECTORY FOR THE USER FOUND
+                return fetch(
+                    mongoConst.URL+mongoConst.ENDPOINT_ONE_DIRECTORY+userinfo._id,
+                    {method:HTTP_METHODS.GET}
+                )
+                .then(jsonUtil)
+                .then(data => {
+                    generalResponse.data.push(data)
+                })
+                .catch(err => processErrors(err, "Mongo Get the Directory"))
             }
-            
         })
         .catch(err =>{
-            processErrors(err,"Mongo GET ALL") 
+            processErrors(err,"Mongo get the User") 
         })
         .finally(( ) => {
             SendResponse(res, generalResponse);
@@ -56,9 +79,9 @@ var userinfo = {
             Constheaders,
             file_id:userinfo.file_id
         }
-        console.log("url: "+fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+fileSystemConst.QUERYPARAMS+userinfo.file_id)
-       
-        fetch(fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+'?archivo='+userinfo.file_id,{method:HTTP_METHODS.GET, headers:headersToFileSystem})
+
+        console.log("url: ["+fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+fileSystemConst.QUERYPARAMS+userinfo.file_id+"]")
+        fetch(fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+fileSystemConst.QUERYPARAMS+userinfo.file_id,{method:HTTP_METHODS.GET, headers:headersToFileSystem})
         .then(jsonUtil)
         .then(data =>{
             //Check for errors in HTTP code. 
@@ -86,10 +109,16 @@ var userinfo = {
             user:req.params.user,
             timestamp:new Date(),
             file_path:req.body.file_path,
-            file_name:hash(req.body.file_name)
+            file_name:hash(req.body.file_name),
 
         }
+
+        postToMongo.directory.push(postBody.file_path+":"+postBody.file_name)
+        postToMongo.user_id = postBody.user
         console.log(JSON.stringify(postBody))
+        console.log(JSON.stringify(postToMongo))
+
+        console.log("url: ["+fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+"]")
         //Post to FileSystem
         fetch(fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE,
             {method:HTTP_METHODS.POST,
@@ -101,14 +130,12 @@ var userinfo = {
             if (data instanceof Error)
             throw data;
             else{
-                //doingStuff()
                 generalResponse.data.push(data)
-                postBody.file_path = data.file_path + " Algo le agregamos por aqui..."
-                console.log(postBody)
+                console.log("url: ["+mongoConst.URL+mongoConst.ENDPOINT_ONE_DIRECTORY+"]")
                 //Post to Mongo
                 return fetch(mongoConst.URL+mongoConst.ENDPOINT_ALL_FILE,
                     {method:HTTP_METHODS.POST,
-                        body:JSON.stringify(postBody),
+                        body:JSON.stringify(postToMongo),
                         headers:Constheaders})
                     }
                 })

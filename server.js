@@ -4,7 +4,8 @@
 const ex = require('express');
 const bodyParser = require('body-parser');
 const app = ex();
-app.use(bodyParser.json({ extended: true }));
+app.use(bodyParser.json({limit: '50mb', extended: true }));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
 
 require('./app/routes')(app, {});
 app.listen(8085, () =>{
