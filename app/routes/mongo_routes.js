@@ -134,7 +134,7 @@ var userinfo = {
                 console.log("url: ["+mongoConst.URL+mongoConst.ENDPOINT_ONE_DIRECTORY+"]")
                 //Post to Mongo
                 return fetch(mongoConst.URL+mongoConst.ENDPOINT_ALL_FILE,
-                    {method:HTTP_METHODS.POST,
+                    {method:HTTP_METHODS.PUT,
                         body:JSON.stringify(postToMongo),
                         headers:Constheaders})
                     }
