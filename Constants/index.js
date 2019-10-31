@@ -24,7 +24,7 @@ var HTTP_METHODS = {
 var fileSystemConst = {
     URL :process.env.fileSystemURL,
     ENDPOINT_ALL_FILE:process.env.fileSystemENDPOINT,
-    QUERYPARAMS:"?archivo="
+    QUERYPARAMS:"/?archivo="
 }
 
 function logError(place, error){

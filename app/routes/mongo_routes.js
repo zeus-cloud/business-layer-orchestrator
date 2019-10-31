@@ -44,9 +44,9 @@ module.exports = function(app){
             file_id:userinfo.file_id
         }
 
-        console.log("url: ["+mongoConst.URL+mongoConst.ENDPOINT_ALL_FILE+"]")
+        console.log("url: ["+mongoConst.URL+mongoConst.ENDPOINT_ALL_USER+"]")
         //THIS FETCHS THE USERS IN THE DB
-        fetch(mongoConst.URL+mongoConst.ENDPOINT_ALL_FILE,
+        fetch(mongoConst.URL+mongoConst.ENDPOINT_ALL_USER,
             {method:HTTP_METHODS.GET})
         .then(jsonUtil)
         .then(data =>{
@@ -56,10 +56,10 @@ module.exports = function(app){
                 //ISSUE: HERE WE SHOULD SEARCH A SPECIFIC USER
                 userinfo = data
 
-                console.log("url: ["+mongoConst.URL+mongoConst.ENDPOINT_ONE_DIRECTORY+userinfo._id+"]")
+                console.log("url: ["+mongoConst.URL+mongoConst.ENDPOINT_ONE_DIRECTORY+"/"+userinfo._id+"]")
                 //THIS FETCH THE DIRECTORY FOR THE USER FOUND
                 return fetch(
-                    mongoConst.URL+mongoConst.ENDPOINT_ONE_DIRECTORY+userinfo._id,
+                    mongoConst.URL+mongoConst.ENDPOINT_ONE_DIRECTORY+"/"+userinfo._id,
                     {method:HTTP_METHODS.GET}
                 )
                 .then(jsonUtil)
@@ -114,9 +114,9 @@ module.exports = function(app){
             postMongo: req.body.postMongo
         }
 
+        console.log(req.body.postMongo)
         console.log("url: ["+fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+"]")
         //Post to FileSystem
-        console.log(JSON.stringify(postBody.stream))
         fetch(fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE,
             {method:HTTP_METHODS.POST,
             body:JSON.stringify(postBody.stream),
@@ -128,11 +128,18 @@ module.exports = function(app){
             throw data;
             else{
                 generalResponse.data.push(data)
-                console.log("url: ["+mongoConst.URL+mongoConst.ENDPOINT_ALL_FILE+"/"+postBody.postMongo._id+"]")
+                console.log("url: ["+mongoConst.URL+mongoConst.ENDPOINT_ONE_DIRECTORY+"/"+postBody.postMongo._id+"]")
                 //Post to Mongo
-                return fetch(mongoConst.URL+mongoConst.ENDPOINT_ALL_FILE+"/"+postBody.postMongo._id,
+
+                mongoBody={
+                    user:postBody.postMongo.user,
+                    directory:postBody.postMongo.directory,
+                    shared:postBody.postMongo.shared 
+                }
+                console.log(JSON.stringify(mongoBody))
+                return fetch(mongoConst.URL+mongoConst.ENDPOINT_ONE_DIRECTORY+"/"+postBody.postMongo._id,
                     {method:HTTP_METHODS.PUT,
-                        body:JSON.stringify(postToMongo),
+                        body:JSON.stringify(mongoBody),
                         headers:Constheaders})
                     }
                 })
