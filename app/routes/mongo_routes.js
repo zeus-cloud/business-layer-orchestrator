@@ -11,6 +11,7 @@ const fetch = require('node-fetch');
 
 module.exports = function(app){
     
+    
 var generalResponse={
     data:[],
     errors:[]
@@ -20,7 +21,7 @@ var postMongo = {
     _id:"",
     user:"",
     directory:[{
-        logical_path
+        logical_path:""
     }],
     shared:[]
 }
@@ -109,11 +110,6 @@ var userinfo = {
             stream:req.body.stream,
             postMongo: req.body.postMongo
         }
-
-        postToMongo.directory.push(postBody.file_path+":"+postBody.file_name)
-        postToMongo.user_id = postBody.user
-        console.log(JSON.stringify(postBody))
-        console.log(JSON.stringify(postMongo))
 
         console.log("url: ["+fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+"]")
         //Post to FileSystem
