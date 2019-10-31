@@ -16,10 +16,11 @@ var generalResponse={
     errors:[]
 };
 
-var postToMongo = {
-    user_id:"",
+var postMongo = {
+    _id:"",
+    user:"",
     directory:[{
-        logical_path:""
+        logical_path
     }],
     shared:[]
 }
@@ -106,23 +107,19 @@ var userinfo = {
     app.post('/:user/folder',(req, res)=>{
         postBody = {
             stream:req.body.stream,
-            user:req.params.user,
-            timestamp:new Date(),
-            file_path:req.body.file_path,
-            file_name:hash(req.body.file_name),
-
+            postMongo: req.body.postMongo
         }
 
         postToMongo.directory.push(postBody.file_path+":"+postBody.file_name)
         postToMongo.user_id = postBody.user
         console.log(JSON.stringify(postBody))
-        console.log(JSON.stringify(postToMongo))
+        console.log(JSON.stringify(postMongo))
 
         console.log("url: ["+fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+"]")
         //Post to FileSystem
         fetch(fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE,
             {method:HTTP_METHODS.POST,
-            body:JSON.stringify(postBody),
+            body:JSON.stringify(postBody.stream),
         headers:Constheaders})
         .then(jsonUtil)
         .then(data =>{
@@ -131,9 +128,9 @@ var userinfo = {
             throw data;
             else{
                 generalResponse.data.push(data)
-                console.log("url: ["+mongoConst.URL+mongoConst.ENDPOINT_ONE_DIRECTORY+"]")
+                console.log("url: ["+mongoConst.URL+mongoConst.ENDPOINT_ALL_FILE+"/"+postBody.postMongo._id+"]")
                 //Post to Mongo
-                return fetch(mongoConst.URL+mongoConst.ENDPOINT_ALL_FILE,
+                return fetch(mongoConst.URL+mongoConst.ENDPOINT_ALL_FILE+"/"+postBody.postMongo._id,
                     {method:HTTP_METHODS.PUT,
                         body:JSON.stringify(postToMongo),
                         headers:Constheaders})
