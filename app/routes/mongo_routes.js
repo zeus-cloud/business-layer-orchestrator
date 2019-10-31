@@ -9,9 +9,6 @@ const fetch = require('node-fetch');
 
 
 
-module.exports = function(app){
-    
-    
 var generalResponse={
     data:[],
     errors:[]
@@ -31,6 +28,12 @@ var userinfo = {
     name:"",
     __V:""
 }
+
+
+module.exports = function(app){
+    
+    
+
 
     //GET from mongo all the folder information
     app.get('/:user/folder', (req, res)=>{
@@ -113,6 +116,7 @@ var userinfo = {
 
         console.log("url: ["+fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE+"]")
         //Post to FileSystem
+        console.log(JSON.stringify(postBody.stream))
         fetch(fileSystemConst.URL+fileSystemConst.ENDPOINT_ALL_FILE,
             {method:HTTP_METHODS.POST,
             body:JSON.stringify(postBody.stream),
